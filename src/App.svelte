@@ -1,4 +1,76 @@
+<canvas id="covidData"></canvas>
+{#await getCovidData}
+	<div class="status">Loading data...</div>
+{:then data}
+	<!-- <main id="graph">
+		<h1 class="graph__title">Los Angeles County<span class="graph__subtitle">New Daily Cases, 90 Days</span><a id="graph__source" href="https://github.com/datadesk/california-coronavirus-data/blob/master/latimes-county-totals.csv">Source: LA Times</a></h1>
+		<div id="graph__marker--quarter">
+			{Math.round(limit * .75)}
+		</div>
+		<div id="graph__marker--half">
+			{Math.round(limit * .50)}
+		</div>
+		<div id="graph__marker--threequarter">
+			{Math.round(limit * .25)}
+		</div>
+		{#each data as dailyData}
+			<div class={`dailyData ${getAdditionalClass(dailyData[0])}`} id={`dailyData--${dailyData[0]}`} style={`width: ${getDataWidth()}%;`}>
+				<span class="dailyData__date">{dailyData[0]}</span>
+				<div class="dailyData__data" style={`height: ${getDataHeight(dailyData[5])}%; background-color: #${getDataColor(dailyData[5])};`}>
+					{#if (dailyData[5] > 30)}
+						<span class="dailyData__dataCount">{dailyData[5]}</span>
+					{/if}
+				</div>
+			</div>
+		{/each}
+	</main> -->
+	<canvas id="covidData"></canvas>
+{:catch error}
+	<div class="status">Unable to retrieve data.</div>
+{/await}
+
 <script>
+	import Chart from 'chart.js';
+	
+	const createChart = (data) => {
+		let labelData = [];
+		let datasetData = [];
+		let colors = [];
+
+		data.forEach(dailyData => {
+			labelData.push(dailyData[0]);
+			datasetData.push(dailyData[5]);
+			colors.push(`#${getDataColor(dailyData[5])}`);
+		});
+
+		console.log(colors);
+
+		const ctx = document.getElementById('covidData');
+		const covidData = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: labelData,
+				datasets: [{
+					label: 'Daily New Cases',
+					data: datasetData,
+					backgroundColor: colors,
+					borderWidth: 0
+				}]
+			},
+			options: {
+				
+				maintainAspectRatio: false,
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero: true
+						}
+					}]
+				}
+			}
+		});
+	}
+
 	let limit = 2000;
 	// let dataCount;
 	const dataCount = 90;
@@ -15,7 +87,7 @@
 			}
 		}
 		// dataCount = losAngelesDataArray.length;
-		return losAngelesDataArray.reverse().slice(`-${dataCount}`);
+		createChart(losAngelesDataArray.reverse().slice(`-${dataCount}`));
 		// return losAngelesDataArray;
 	}
 
@@ -80,38 +152,6 @@
 		return month % 2 === 0 ? `` : `dailyData--odd`;
 	}
 </script>
-
-{#await getCovidData}
-	<div class="status">Loading data...</div>
-{:then data}
-	<main id="graph">
-		<!-- <button on:click={setDataLimit(30)}>30</button>
-		<button on:click={setDataLimit(60)}>60</button>
-		<button on:click={setDataLimit(0)}>All</button> -->
-		<h1 class="graph__title">Los Angeles County<span class="graph__subtitle">New Daily Cases, 90 Days</span><a id="graph__source" href="https://github.com/datadesk/california-coronavirus-data/blob/master/latimes-county-totals.csv">Source: LA Times</a></h1>
-		<div id="graph__marker--quarter">
-			{Math.round(limit * .75)}
-		</div>
-		<div id="graph__marker--half">
-			{Math.round(limit * .50)}
-		</div>
-		<div id="graph__marker--threequarter">
-			{Math.round(limit * .25)}
-		</div>
-		{#each data as dailyData}
-			<div class={`dailyData ${getAdditionalClass(dailyData[0])}`} id={`dailyData--${dailyData[0]}`} style={`width: ${getDataWidth()}%;`}>
-				<span class="dailyData__date">{dailyData[0]}</span>
-				<div class="dailyData__data" style={`height: ${getDataHeight(dailyData[5])}%; background-color: #${getDataColor(dailyData[5])};`}>
-					{#if (dailyData[5] > 30)}
-						<span class="dailyData__dataCount">{dailyData[5]}</span>
-					{/if}
-				</div>
-			</div>
-		{/each}
-	</main>
-{:catch error}
-	<div class="status">Unable to retrieve data.</div>
-{/await}
 
 <style>
 	.status {
@@ -222,5 +262,10 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+	}
+
+	#covidData {
+		width: 100%;
+		height: 100%;
 	}
 </style>
