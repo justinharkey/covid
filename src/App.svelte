@@ -13,28 +13,28 @@
 
 <script>
 	import Chart from './Chart.svelte';
+	import { countyTotals } from './constants.js';
 
-	// const getCountyList = (data) => {
-	// 	let countyList = [];
-	// 	// start at index 1 so we skip the CSV label
-	// 	for (let i = 1; i < data.length; i++) {
-	// 		let countyName = data[i][1];
-	// 		if (countyList.indexOf(countyName) === -1 && countyName !== undefined) {
-	// 			countyList.push(countyName);
-	// 		}
-	// 	}
-	// 	return countyList;
-	// }
+	const getCountyList = (data) => {
+		let countyList = [];
+		// start at index 1 so we skip the CSV label
+		for (let i = 1; i < data.length; i++) {
+			let countyName = data[i][countyTotals.county];
+			if (countyList.indexOf(countyName) === -1 && countyName !== undefined) {
+				countyList.push(countyName);
+			}
+		}
+		return countyList;
+	}
 
 	const parseLosAngelesDataToArray = (parsedData) => {
 		const losAngelesDataArray = [];
 		for (let i = 0; i < parsedData.length; i++) {
-			if (parsedData[i][5].includes('Los Angeles')) {
+			if (parsedData[i].includes('Los Angeles')) {
 				losAngelesDataArray.push(parsedData[i]);
-				break;
 			}
 		}
-		return losAngelesDataArray;
+		return losAngelesDataArray.reverse();
 	}
 
 	const parseCSVData = (covidData) => {
@@ -47,14 +47,12 @@
 				arrMatches[2].replace(new RegExp( "\"\"", "g" ), "\"") :
 				arrMatches[3]);
 		}
-		// getCountyList(arrData);
-		console.log(arrData);
+		getCountyList(arrData);
 		return parseLosAngelesDataToArray(arrData);
 	}
 
 	const getCovidData = (async() => {
-		// const response = await fetch(`https://raw.githubusercontent.com/datadesk/california-coronavirus-data/master/latimes-county-totals.csv`);
-		const response = await fetch(`https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv`, { cache: 'force-cache' });
+		const response = await fetch(`https://raw.githubusercontent.com/datadesk/california-coronavirus-data/master/latimes-county-totals.csv`, { cache: 'force-cache' });
 		const covidData = await response.text();
 		return await parseCSVData(covidData);
 	})();

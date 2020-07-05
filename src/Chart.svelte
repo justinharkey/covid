@@ -1,38 +1,21 @@
 <canvas id="covidChart"></canvas>
 
-<style>
-#covidChart {
-    width: 100%;
-    height: 100%;
-}
-</style>
-
 <script>
 import { afterUpdate } from 'svelte';
 import Chart from 'chart.js';
+import { countyTotals } from './constants.js';
 
 export let data;
 
 let covidChart;
 let limit = 0;
 
-let dailyNumbers = [];
-
-const getDailyNumbers = (data) => {
-    for (let i = 51; i < data[0].length; i++) {
-        dailyNumbers.push(data[0][i] - data[0][i - 1]);
-    }
-}
-
-const setLimit = (dailyNumbers) => {
-    dailyNumbers.forEach(dailyData => {
-        // if (dailyData[0] > '2020-03-02') {
-        //     if (parseInt(dailyData[5], 10) > ( limit )) {
-        //         limit = (parseInt(dailyData[5], 10));
-        //     }
-        // }
-        if (parseInt(dailyData, 10) > ( limit )) {
-            limit = (parseInt(dailyData, 10));
+const setLimit = (data) => {
+    data.forEach(dailyData => {
+        if (dailyData[countyTotals.date] > '2020-03-02') {
+            if (parseInt(dailyData[countyTotals.newConfirmedCases], 10) > ( limit )) {
+                limit = (parseInt(dailyData[countyTotals.newConfirmedCases], 10));
+            }
         }
     });
 }
@@ -69,21 +52,18 @@ const createChart = () => {
         covidChart.destroy();
     }
 
+    setLimit(data);
+
     let labelData = [];
     let datasetData = [];
     let colors = [];
-
-    getDailyNumbers(data);
-
-    setLimit(dailyNumbers);
-
-    dailyNumbers.forEach((dailyData, i) => {
-        // if (dailyData[0] > '2020-03-02') {
-            // labelData.push(dailyData[0].substring(5).replace(/-/g, ' / '));
-            labelData.push(i);
-            datasetData.push(dailyData);
-            colors.push(`#${getDataColor(dailyData)}`);
-        // }
+    
+    data.forEach(dailyData => {
+        if (dailyData[countyTotals.date] > '2020-03-02') {
+            labelData.push(dailyData[countyTotals.date].substring(5).replace(/-/g, ' / '));
+            datasetData.push(dailyData[countyTotals.newConfirmedCases]);
+            colors.push(`#${getDataColor(dailyData[countyTotals.newConfirmedCases])}`);
+        }
     });
 
     const ctx = document.getElementById('covidChart');
