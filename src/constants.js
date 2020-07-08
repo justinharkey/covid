@@ -1,9 +1,8 @@
-export class countyTotals {
-    static date                 = 0;
-    static county               = 1;
-    static fips                 = 2;
-    static confirmedCases       = 3;
-    static deaths               = 4;
-    static newConfirmedCases    = 5;
-    static newDeaths            = 6;
-}
+// County Totals
+export const DATE = 0;
+export const COUNTY = 1;
+export const FIPS = 2;
+export const CONFIRMED_CASES = 3;
+export const DEATHS = 4;
+export const NEW_CONFIRMED_CASES = 5;
+export const NEW_DEATHS = 6;

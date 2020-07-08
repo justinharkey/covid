@@ -14,13 +14,12 @@
 <script>
 	import Chart from './Chart.svelte';
 	import CountySelector from './CountySelector.svelte';
-	import { countyTotals } from './constants.js';
 	import { parsedData, selectedCounty, countyList } from './stores.js';
 
 	const setCountyByUrl = () => {
 		const currentUrl = window.location.pathname.substr(1);
 		if (currentUrl) {
-			let filteredCounty = $countyList.filter((county) => county[1] === currentUrl)[0];
+			let filteredCounty = $countyList.filter((county) => { county[1] === currentUrl })[0];
 			selectedCounty.set(filteredCounty[0]);
 		}
 	}

@@ -1,11 +1,10 @@
 <select bind:value={selectedCountyName} on:change={updateSelectedCounty}>
     {#each $countyList as county}
-        <option value="{county[0]}">{county[0]} County</option>
+        <option value={county[0]}>{county[0]} County</option>
     {/each}
 </select>
 
 <script>
-import { countyTotals } from './constants.js';
 import { parsedData, selectedCounty, countyList } from './stores.js';
 
 // let countyList = [];

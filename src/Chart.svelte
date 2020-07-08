@@ -3,7 +3,7 @@
 <script>
 import { afterUpdate } from 'svelte';
 import Chart from 'chart.js';
-import { countyTotals } from './constants.js';
+import { DATE, NEW_CONFIRMED_CASES } from './constants.js';
 import { parsedData, selectedCounty } from './stores.js';
 
 let covidChart;
@@ -22,10 +22,10 @@ const filterSelectedCountyData = (data) => {
 
 const setLimit = (selectedCountyData) => {
     limit = 0;
-    selectedCountyData.forEach(dailyData => {
-        if (dailyData[countyTotals.date] > '2020-03-02') {
-            if (parseInt(dailyData[countyTotals.newConfirmedCases], 10) > ( limit * 1.05 )) {
-                limit = (parseInt(dailyData[countyTotals.newConfirmedCases], 10) * 1.05);
+    selectedCountyData.forEach((dailyData) => {
+        if (dailyData[DATE] > '2020-03-02') {
+            if (parseInt(dailyData[NEW_CONFIRMED_CASES], 10) > ( limit * 1.05 )) {
+                limit = (parseInt(dailyData[NEW_CONFIRMED_CASES], 10) * 1.05);
             }
         }
     });
@@ -71,11 +71,11 @@ const createChart = () => {
     let datasetData = [];
     let colors = [];
 
-    selectedCountyData.forEach(dailyData => {
-        if (dailyData[countyTotals.date] > '2020-03-02') {
-            labelData.push(dailyData[countyTotals.date].substring(5).replace(/-/g, ' / '));
-            datasetData.push(dailyData[countyTotals.newConfirmedCases]);
-            colors.push(`#${getDataColor(dailyData[countyTotals.newConfirmedCases])}`);
+    selectedCountyData.forEach((dailyData) => {
+        if (dailyData[DATE] > '2020-03-02') {
+            labelData.push(dailyData[DATE].substring(5).replace(/-/g, ' / '));
+            datasetData.push(dailyData[NEW_CONFIRMED_CASES]);
+            colors.push(`#${getDataColor(dailyData[NEW_CONFIRMED_CASES])}`);
         }
     });
 
