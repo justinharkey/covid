@@ -1,44 +1,32 @@
-<h1 class="graph__title">
-	Los Angeles County<span class="graph__subtitle">New daily cases from March 3rd, 2020</span>
-	<a id="graph__source" href="https://github.com/datadesk/california-coronavirus-data/blob/master/latimes-county-totals.csv">Source: LA Times</a>
-</h1>
-
 {#await getCovidData}
 	<div class="status">Loading data...</div>
 {:then data}
-	<Chart data={data} />
+	<h1 class="graph__title">
+		<CountySelector />
+		<span class="graph__subtitle">New daily cases from March 3rd, 2020</span>
+		<a id="graph__source" href="https://github.com/datadesk/california-coronavirus-data/blob/master/latimes-county-totals.csv">Source: LA Times</a>
+	</h1>
+	<Chart />
 {:catch error}
 	<div class="status">Unable to retrieve data.</div>
 {/await}
 
 <script>
 	import Chart from './Chart.svelte';
+	import CountySelector from './CountySelector.svelte';
 	import { countyTotals } from './constants.js';
+	import { parsedData, selectedCounty, countyList } from './stores.js';
 
-	const getCountyList = (data) => {
-		let countyList = [];
-		// start at index 1 so we skip the CSV label
-		for (let i = 1; i < data.length; i++) {
-			let countyName = data[i][countyTotals.county];
-			if (countyList.indexOf(countyName) === -1 && countyName !== undefined) {
-				countyList.push(countyName);
-			}
+	const setInitialCountyByUrl = () => {
+		const currentUrl = window.location.pathname.substr(1);
+		if (currentUrl) {
+			let filteredCounty = $countyList.filter((county) => county[1] === currentUrl)[0];
+			selectedCounty.set(filteredCounty[0]);
 		}
-		return countyList;
-	}
-
-	const parseLosAngelesDataToArray = (parsedData) => {
-		const losAngelesDataArray = [];
-		for (let i = 0; i < parsedData.length; i++) {
-			if (parsedData[i].includes('Los Angeles')) {
-				losAngelesDataArray.push(parsedData[i]);
-			}
-		}
-		return losAngelesDataArray.reverse();
 	}
 
 	const parseCSVData = (covidData) => {
-		// blatantly stolen from https://gist.github.com/Jezternz/c8e9fafc2c114e079829974e3764db75
+		// regex from https://gist.github.com/Jezternz/c8e9fafc2c114e079829974e3764db75
 		const objPattern = new RegExp(("(\\,|\\r?\\n|\\r|^)(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|([^\\,\\r\\n]*))"),"gi");
 		let arrMatches = null, arrData = [[]];
 		while (arrMatches = objPattern.exec(covidData)){
@@ -47,8 +35,8 @@
 				arrMatches[2].replace(new RegExp( "\"\"", "g" ), "\"") :
 				arrMatches[3]);
 		}
-		getCountyList(arrData);
-		return parseLosAngelesDataToArray(arrData);
+		parsedData.set(arrData);
+		return arrData;
 	}
 
 	const getCovidData = (async() => {
@@ -56,6 +44,8 @@
 		const covidData = await response.text();
 		return await parseCSVData(covidData);
 	})();
+
+	setInitialCountyByUrl();
 </script>
 
 <style>

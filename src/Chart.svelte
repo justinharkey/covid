@@ -4,17 +4,28 @@
 import { afterUpdate } from 'svelte';
 import Chart from 'chart.js';
 import { countyTotals } from './constants.js';
-
-export let data;
+import { parsedData, selectedCounty } from './stores.js';
 
 let covidChart;
 let limit = 0;
+let selectedCountyData = [];
 
-const setLimit = (data) => {
-    data.forEach(dailyData => {
+const filterSelectedCountyData = (data) => {
+        selectedCountyData = [];
+		for (let i = 0; i < data.length; i++) {
+			if (data[i].includes($selectedCounty)) {
+				selectedCountyData.push(data[i]);
+			}
+		}
+		selectedCountyData = selectedCountyData.reverse();
+	}
+
+const setLimit = (selectedCountyData) => {
+    limit = 0;
+    selectedCountyData.forEach(dailyData => {
         if (dailyData[countyTotals.date] > '2020-03-02') {
-            if (parseInt(dailyData[countyTotals.newConfirmedCases], 10) > ( limit )) {
-                limit = (parseInt(dailyData[countyTotals.newConfirmedCases], 10));
+            if (parseInt(dailyData[countyTotals.newConfirmedCases], 10) > ( limit * 1.05 )) {
+                limit = (parseInt(dailyData[countyTotals.newConfirmedCases], 10) * 1.05);
             }
         }
     });
@@ -52,13 +63,15 @@ const createChart = () => {
         covidChart.destroy();
     }
 
-    setLimit(data);
+    filterSelectedCountyData($parsedData);
+
+    setLimit(selectedCountyData);
 
     let labelData = [];
     let datasetData = [];
     let colors = [];
-    
-    data.forEach(dailyData => {
+
+    selectedCountyData.forEach(dailyData => {
         if (dailyData[countyTotals.date] > '2020-03-02') {
             labelData.push(dailyData[countyTotals.date].substring(5).replace(/-/g, ' / '));
             datasetData.push(dailyData[countyTotals.newConfirmedCases]);
