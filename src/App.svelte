@@ -45,6 +45,8 @@
 		return await parseCSVData(covidData);
 	})();
 
+	document.title = `${$selectedCounty} County - New Daily Coronavirus Cases`;
+
 	setInitialCountyByUrl();
 </script>
 
