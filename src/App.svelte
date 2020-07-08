@@ -17,7 +17,7 @@
 	import { countyTotals } from './constants.js';
 	import { parsedData, selectedCounty, countyList } from './stores.js';
 
-	const setInitialCountyByUrl = () => {
+	const setCountyByUrl = () => {
 		const currentUrl = window.location.pathname.substr(1);
 		if (currentUrl) {
 			let filteredCounty = $countyList.filter((county) => county[1] === currentUrl)[0];
@@ -45,9 +45,15 @@
 		return await parseCSVData(covidData);
 	})();
 
-	document.title = `${$selectedCounty} County - New Daily Coronavirus Cases`;
+	setCountyByUrl();
 
-	setInitialCountyByUrl();
+	window.addEventListener('popstate', (event) => {
+		if (event.state && event.state.selectedCountyName) {
+			selectedCounty.set(event.state.selectedCountyName);
+		}
+	});
+
+	$: document.title = `${$selectedCounty} County - New Daily Coronavirus Cases`;
 </script>
 
 <style>

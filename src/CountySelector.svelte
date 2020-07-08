@@ -9,7 +9,7 @@ import { countyTotals } from './constants.js';
 import { parsedData, selectedCounty, countyList } from './stores.js';
 
 // let countyList = [];
-let selectedCountyName = $selectedCounty;
+$: selectedCountyName = $selectedCounty;
 
 const updateSelectedCounty = (event) => {
     history.pushState({'selectedCountyName': event.target.value}, '', `/${event.target.value.replace(/ /g, '-').toLowerCase()}`);
