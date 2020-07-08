@@ -13,6 +13,7 @@ let selectedCountyName = $selectedCounty;
 
 const updateSelectedCounty = (event) => {
     history.pushState({'selectedCountyName': event.target.value}, '', `/${event.target.value.replace(/ /g, '-').toLowerCase()}`);
+    document.title = `${event.target.value} County - New Daily Coronavirus Cases`;
     selectedCounty.set(event.target.value);
 }
 
