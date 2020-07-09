@@ -13,6 +13,10 @@ let labelData = [];
 let datasetData = [];
 let colors = [];
 
+/**
+ * Filters array data based on user selected county.
+ * @param {array} data - Array of parsed data.
+ */
 const filterSelectedCountyData = (data) => {
     selectedCountyData = [];
     for (let i = 0; i < data.length; i++) {
@@ -23,6 +27,9 @@ const filterSelectedCountyData = (data) => {
     selectedCountyData = selectedCountyData.reverse();
 }
 
+/**
+ * Destroys chart and resets all data variables.
+ */
 const resetChart = () => {
     if (covidChart) {
         covidChart.destroy();
@@ -34,6 +41,9 @@ const resetChart = () => {
     colors = [];
 }
 
+/**
+ * Sets limit by looping through parsed data array and finding the highest value. Adds a 5% margin.
+ */
 const setLimit = () => {
     selectedCountyData.forEach((dailyData) => {
         if (dailyData[DATE] > START_DATE) {
@@ -44,6 +54,10 @@ const setLimit = () => {
     });
 }
 
+/**
+ * Formats data arrays for labelData, datasetData, and colors.
+ * @param {array} selectedCountyData - Array of county data.
+ */
 const formatData = (selectedCountyData) => {
     selectedCountyData.forEach((dailyData) => {
         if (dailyData[DATE] > START_DATE) {
@@ -54,6 +68,11 @@ const formatData = (selectedCountyData) => {
     });
 }
 
+/**
+ * Dynamically assigns color value based on its percentage of limit.
+ * @param {number} newCases - New cases.
+ * @returns {string} Returns hexadecimal color value.
+ */
 const getDataColor = (newCases) => {
     const dataPercentage = ( newCases / limit ) * 100;
     let color;
@@ -81,6 +100,9 @@ const getDataColor = (newCases) => {
     return color;
 }
 
+/**
+ * Creates chart using ChartJS.
+ */
 const createChart = () => {
     filterSelectedCountyData($parsedData);
 

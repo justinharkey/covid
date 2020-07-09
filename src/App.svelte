@@ -12,47 +12,59 @@
 {/await}
 
 <script>
-	import Chart from './Chart.svelte';
-	import CountySelector from './CountySelector.svelte';
-	import { parsedData, selectedCounty, countyList } from './stores.js';
+import Chart from './Chart.svelte';
+import CountySelector from './CountySelector.svelte';
+import { parsedData, selectedCounty, countyList } from './stores.js';
 
-	const setCountyByUrl = () => {
-		const currentUrl = window.location.pathname.substr(1);
-		if (currentUrl) {
-			let filteredCounty = $countyList.filter((county) => county[1] === currentUrl)[0];
-			selectedCounty.set(filteredCounty[0]);
-		}
+/**
+ * Checks if a pathname is present, if so checks to see if pathname matches county in county list. Updates Svelte store if there is a match.
+ */
+const setCountyByUrl = () => {
+	const currentUrl = window.location.pathname.substr(1);
+	if (currentUrl) {
+		let filteredCounty = $countyList.filter((county) => county[1] === currentUrl)[0];
+		selectedCounty.set(filteredCounty[0]);
 	}
+}
 
-	const parseCSVData = (covidData) => {
-		// regex from https://gist.github.com/Jezternz/c8e9fafc2c114e079829974e3764db75
-		const objPattern = new RegExp(("(\\,|\\r?\\n|\\r|^)(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|([^\\,\\r\\n]*))"),"gi");
-		let arrMatches = null, arrData = [[]];
-		while (arrMatches = objPattern.exec(covidData)){
-			if (arrMatches[1].length && arrMatches[1] !== ",")arrData.push([]);
-			arrData[arrData.length - 1].push(arrMatches[2] ? 
-				arrMatches[2].replace(new RegExp( "\"\"", "g" ), "\"") :
-				arrMatches[3]);
-		}
-		parsedData.set(arrData);
-		return arrData;
+/**
+ * Parses CSV data into an array.
+ * @param {string} covidData - CSV data
+ * @returns {array} Array with an array of parsed data.
+ */
+const parseCSVData = (covidData) => {
+	// regex from https://gist.github.com/Jezternz/c8e9fafc2c114e079829974e3764db75
+	const objPattern = new RegExp(("(\\,|\\r?\\n|\\r|^)(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|([^\\,\\r\\n]*))"),"gi");
+	let arrMatches = null, arrData = [[]];
+	while (arrMatches = objPattern.exec(covidData)){
+		if (arrMatches[1].length && arrMatches[1] !== ",")arrData.push([]);
+		arrData[arrData.length - 1].push(arrMatches[2] ? 
+			arrMatches[2].replace(new RegExp( "\"\"", "g" ), "\"") :
+			arrMatches[3]);
 	}
+	parsedData.set(arrData);
+	return arrData;
+}
 
-	const getCovidData = (async() => {
-		const response = await fetch(`https://raw.githubusercontent.com/datadesk/california-coronavirus-data/master/latimes-county-totals.csv`, { cache: 'force-cache' });
-		const covidData = await response.text();
-		return await parseCSVData(covidData);
-	})();
+/**
+ * Fetches CSV data.
+ * @returns {Promise} Promise containing CSV data.
+ */
+const getCovidData = (async() => {
+	const response = await fetch(`https://raw.githubusercontent.com/datadesk/california-coronavirus-data/master/latimes-county-totals.csv`, { cache: 'force-cache' });
+	const covidData = await response.text();
+	return await parseCSVData(covidData);
+})();
 
-	setCountyByUrl();
+setCountyByUrl();
 
-	window.addEventListener('popstate', (event) => {
-		if (event.state && event.state.selectedCountyName) {
-			selectedCounty.set(event.state.selectedCountyName);
-		}
-	});
+window.addEventListener('popstate', (event) => {
+	if (event.state && event.state.selectedCountyName) {
+		selectedCounty.set(event.state.selectedCountyName);
+	}
+});
 
-	$: document.title = `${$selectedCounty} County - New Daily Coronavirus Cases`;
+$: document.title = `${$selectedCounty} County - New Daily Coronavirus Cases`;
 </script>
 
 <style>

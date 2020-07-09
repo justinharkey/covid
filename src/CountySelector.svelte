@@ -7,26 +7,17 @@
 <script>
 import { parsedData, selectedCounty, countyList } from './stores.js';
 
-// let countyList = [];
 $: selectedCountyName = $selectedCounty;
 
+/**
+ * Updates history, document title, and store upon user selection of a new county.
+ * @param {object} event - event object
+ */
 const updateSelectedCounty = (event) => {
     history.pushState({'selectedCountyName': event.target.value}, '', `/${event.target.value.replace(/ /g, '-').toLowerCase()}`);
     document.title = `${event.target.value} County - New Daily Coronavirus Cases`;
     selectedCounty.set(event.target.value);
 }
-
-// const getCountyList = (data) => {
-//     // start at index 1 so we skip the CSV label
-//     for (let i = 1; i < data.length; i++) {
-//         let countyName = data[i][countyTotals.county];
-//         if (countyList.indexOf(countyName) === -1 && countyName !== undefined) {
-//             countyList.push(countyName);
-//         }
-//     }
-// }
-
-// getCountyList($parsedData);
 </script>
 
 <style>
