@@ -6,3 +6,6 @@ export const CONFIRMED_CASES        = 3;
 export const DEATHS                 = 4;
 export const NEW_CONFIRMED_CASES    = 5;
 export const NEW_DEATHS             = 6;
+
+// Dates
+export const START_DATE             = '2020-03-02';
