@@ -25,7 +25,7 @@ const setLimit = (selectedCountyData) => {
     selectedCountyData.forEach((dailyData) => {
         if (dailyData[DATE] > '2020-03-02') {
             if (parseInt(dailyData[NEW_CONFIRMED_CASES], 10) > ( limit * 1.05 )) {
-                limit = (parseInt(dailyData[NEW_CONFIRMED_CASES], 10) * 1.05);
+                limit = Math.ceil(parseInt(dailyData[NEW_CONFIRMED_CASES], 10) * 1.05);
             }
         }
     });
@@ -117,6 +117,7 @@ const createChart = () => {
             scales: {
                 yAxes: [{
                     ticks: {
+                        suggestedMax: limit,
                         beginAtZero: true,
                         fontSize: 10,
                         mirror: true,
