@@ -3,6 +3,8 @@
 
 This is a very simple coronavirus tracker that tracks new daily cases in California. I built it mostly as an exercise to learn [Svelte](https://svelte.dev/). It uses data from the [Los Angeles Times Datadesk](https://github.com/datadesk/california-coronavirus-data).
 
+[Live Version](https://covid.justinharkey.com)
+
 ## Features
 
 - Filter by county
