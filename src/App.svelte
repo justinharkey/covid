@@ -51,7 +51,7 @@ const parseCSVData = (covidData) => {
  * @returns {Promise} Promise containing CSV data.
  */
 const getCovidData = (async() => {
-	const response = await fetch(`https://raw.githubusercontent.com/datadesk/california-coronavirus-data/master/latimes-county-totals.csv`, { cache: 'force-cache' });
+	const response = await fetch(`https://raw.githubusercontent.com/datadesk/california-coronavirus-data/master/latimes-county-totals.csv`);
 	const covidData = await response.text();
 	return await parseCSVData(covidData);
 })();
