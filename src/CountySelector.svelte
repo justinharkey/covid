@@ -4,7 +4,7 @@
     {/each}
 </select>
 
-<script>
+<script lang="ts">
 import { parsedData, selectedCounty, countyList } from './stores.js';
 
 $: selectedCountyName = $selectedCounty;

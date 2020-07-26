@@ -11,7 +11,7 @@
 	<div class="status">Unable to retrieve data.</div>
 {/await}
 
-<script>
+<script lang="ts">
 import Chart from './Chart.svelte';
 import CountySelector from './CountySelector.svelte';
 import { parsedData, selectedCounty, countyList } from './stores.js';

@@ -1,6 +1,6 @@
 <canvas id="covidChart"></canvas>
 
-<script>
+<script lang="ts">
 import { beforeUpdate, afterUpdate } from 'svelte';
 import Chart from 'chart.js';
 import { DATE, NEW_CONFIRMED_CASES, START_DATE } from './constants.js';
