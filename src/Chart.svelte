@@ -3,21 +3,21 @@
 <script lang="ts">
 import { beforeUpdate, afterUpdate } from 'svelte';
 import Chart from 'chart.js';
-import { DATE, NEW_CONFIRMED_CASES, START_DATE } from './constants.js';
-import { parsedData, selectedCounty } from './stores.js';
+import { DATE, NEW_CONFIRMED_CASES, START_DATE } from './constants';
+import { parsedData, selectedCounty } from './stores';
 
 let covidChart;
-let limit = 0;
-let selectedCountyData = [];
-let labelData = [];
-let datasetData = [];
-let colors = [];
+let limit: number = 0;
+let selectedCountyData: Array<string> = [];
+let labelData: Array<string> = [];
+let datasetData: Array<string> = [];
+let colors: Array<string> = [];
 
 /**
  * Filters array data based on user selected county.
  * @param {array} data - Array of parsed data.
  */
-const filterSelectedCountyData = (data) => {
+const filterSelectedCountyData = (data: Array<string>) => {
     selectedCountyData = [];
     for (let i = 0; i < data.length; i++) {
         if (data[i].includes($selectedCounty)) {
@@ -58,12 +58,12 @@ const setLimit = () => {
  * Formats data arrays for labelData, datasetData, and colors.
  * @param {array} selectedCountyData - Array of county data.
  */
-const formatData = (selectedCountyData) => {
+const formatData = () => {
     selectedCountyData.forEach((dailyData) => {
         if (dailyData[DATE] > START_DATE) {
             labelData.push(dailyData[DATE].substring(5).replace(/-/g, ' / '));
             datasetData.push(dailyData[NEW_CONFIRMED_CASES]);
-            colors.push(`#${getDataColor(dailyData[NEW_CONFIRMED_CASES])}`);
+            colors.push(`#${getDataColor( parseInt(dailyData[NEW_CONFIRMED_CASES], 10) )}`);
         }
     });
 }
@@ -73,9 +73,9 @@ const formatData = (selectedCountyData) => {
  * @param {number} newCases - New cases.
  * @returns {string} Returns hexadecimal color value.
  */
-const getDataColor = (newCases) => {
-    const dataPercentage = ( newCases / limit ) * 100;
-    let color;
+const getDataColor = (newCases: number) => {
+    const dataPercentage: number = ( newCases / limit ) * 100;
+    let color: string;
     if (dataPercentage <= 10) {
         color = 'ffba08';
     } else if (dataPercentage <= 20) {
@@ -106,9 +106,9 @@ const getDataColor = (newCases) => {
 const createChart = () => {
     filterSelectedCountyData($parsedData);
 
-    setLimit(selectedCountyData);
+    setLimit();
 
-    formatData(selectedCountyData);
+    formatData();
 
     const ctx = document.getElementById('covidChart');
     covidChart = new Chart(ctx, {

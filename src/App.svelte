@@ -14,16 +14,20 @@
 <script lang="ts">
 import Chart from './Chart.svelte';
 import CountySelector from './CountySelector.svelte';
-import { parsedData, selectedCounty, countyList } from './stores.js';
+import { COUNTY_LIST } from './constants';
+import { parsedData, selectedCounty } from './stores';
+import type { ICounty } from './models/county';
 
 /**
  * Checks if a pathname is present, if so checks to see if pathname matches county in county list. Updates Svelte store if there is a match.
  */
 const setCountyByUrl = () => {
-	const currentUrl = window.location.pathname.substr(1);
+	const currentUrl: string = window.location.pathname.substr(1);
 	if (currentUrl) {
-		let filteredCounty = $countyList.filter((county) => county[1] === currentUrl)[0];
-		selectedCounty.set(filteredCounty[0]);
+		let filteredCounty: Array<ICounty> = COUNTY_LIST.counties.filter((county) => {
+			return county.countySlug === currentUrl;
+		});
+		selectedCounty.set(filteredCounty[0].countyName);
 	}
 }
 
@@ -32,7 +36,7 @@ const setCountyByUrl = () => {
  * @param {string} covidData - CSV data
  * @returns {array} Array with an array of parsed data.
  */
-const parseCSVData = (covidData) => {
+const parseCSVData = (covidData: string) => {
 	// regex from https://gist.github.com/Jezternz/c8e9fafc2c114e079829974e3764db75
 	const objPattern = new RegExp(("(\\,|\\r?\\n|\\r|^)(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|([^\\,\\r\\n]*))"),"gi");
 	let arrMatches = null, arrData = [[]];
@@ -58,7 +62,7 @@ const getCovidData = (async() => {
 
 setCountyByUrl();
 
-window.addEventListener('popstate', (event) => {
+window.addEventListener('popstate', (event: PopStateEvent) => {
 	if (event.state && event.state.selectedCountyName) {
 		selectedCounty.set(event.state.selectedCountyName);
 	}

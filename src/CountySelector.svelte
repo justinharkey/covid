@@ -1,11 +1,12 @@
 <select bind:value={selectedCountyName} on:change={updateSelectedCounty}>
-    {#each $countyList as county}
-        <option value={county[0]}>{county[0]} County</option>
+    {#each COUNTY_LIST.counties as county}
+        <option value={county.countyName}>{county.countyName} County</option>
     {/each}
 </select>
 
 <script lang="ts">
-import { parsedData, selectedCounty, countyList } from './stores.js';
+import { COUNTY_LIST } from './constants';
+import { parsedData, selectedCounty } from './stores';
 
 $: selectedCountyName = $selectedCounty;
 
@@ -13,10 +14,11 @@ $: selectedCountyName = $selectedCounty;
  * Updates history, document title, and store upon user selection of a new county.
  * @param {object} event - event object
  */
-const updateSelectedCounty = (event) => {
-    history.pushState({'selectedCountyName': event.target.value}, '', `/${event.target.value.replace(/ /g, '-').toLowerCase()}`);
-    document.title = `${event.target.value} County - New Daily Coronavirus Cases`;
-    selectedCounty.set(event.target.value);
+const updateSelectedCounty = (event: Event) => {
+    const target = event.target as HTMLSelectElement;
+    history.pushState({'selectedCountyName': target.value}, '', `/${target.value.replace(/ /g, '-').toLowerCase()}`);
+    document.title = `${target.value} County - New Daily Coronavirus Cases`;
+    selectedCounty.set(target.value);
 }
 </script>
 
