@@ -1,11 +1,11 @@
 <script lang="ts">
   export let data;
 
-  import { DATE, NEW_CONFIRMED_CASES, START_DATE } from "./constants";
+  import { START_DATE } from "./constants";
   import { DataService } from "./services/dataService";
 
   let limit: number = 0;
-  let counts: Array<string> = [];
+  let counts: Array<number> = [];
   let dates: Array<string> = [];
   let colors: Array<string> = [];
 
@@ -62,24 +62,115 @@
    * Formats data arrays for labelData, counts, and colors.
    * @param {array} countyData - Array of county data.
    */
-  const formatData = (countyData) => {
-    countyData.forEach((dailyData) => {
-      if (dailyData[DATE] > START_DATE) {
-        counts.push(dailyData[NEW_CONFIRMED_CASES]);
-        dates.push(dailyData[DATE]);
-        colors.push(
-          `#${getDataColor(parseInt(dailyData[NEW_CONFIRMED_CASES], 10))}`
-        );
+  const formatChartData = (countyData) => {
+    if (countyData.dailyDetails && countyData.dailyDetails.length > 0) {
+      for (let i = 0; i < countyData.dailyDetails.length; i++) {
+        const currentDayCount =
+          i > 0
+            ? countyData.dailyDetails[i].reportedCases -
+              countyData.dailyDetails[i - 1].reportedCases
+            : 0;
+        if (countyData.dailyDetails[i].date > START_DATE) {
+          counts.push(currentDayCount);
+          colors.push(`#${getDataColor(currentDayCount)}`);
+          dates.push(countyData.dailyDetails[i].date);
+        }
       }
-    });
+    }
   };
 
   $: {
     resetChart();
     setLimit(data);
-    formatData(data);
+    formatChartData(data);
+    getBarElements();
   }
+
+  const addHover = (event) => {
+    if (!event.target.classList.contains("hover")) {
+      event.target.classList.add("hover");
+    }
+    event.preventDefault();
+  };
+
+  const removeHover = (event) => {
+    if (event.target.classList.contains("hover")) {
+      event.target.classList.remove("hover");
+    }
+    event.preventDefault();
+  };
+
+  const getBarElements = () => {
+    const barElements: Element[] = Array.from(
+      document.getElementsByClassName("trend__day")
+    );
+    console.log("barElements", barElements);
+    const matrix = barElements.map((element: HTMLDivElement) => {
+      return {
+        top: element.offsetTop,
+        left: element.offsetLeft,
+        right: element.offsetLeft + element.offsetWidth,
+        bottom: element.offsetTop + element.offsetHeight,
+        e: element,
+      };
+    });
+    console.log("matrix", matrix);
+  };
+
+  const handleTouch = (e) => {
+    console.log(e.touches[0]);
+    const touch = e.touches[0];
+    const element = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (
+      element.classList.contains("trend__day") &&
+      !element.classList.contains("hover")
+    ) {
+      element.classList.add("hover");
+    }
+    if (
+      element.classList.contains("trend__day") &&
+      element.classList.contains("hover")
+    ) {
+      element.classList.remove("hover");
+    }
+  };
 </script>
+
+<div class="count count--trend">
+  <h1 class="count__title">Trend From March 3rd, 2020</h1>
+  <div class="trend" on:touchmove={handleTouch}>
+    <div class="trend__yTick trend__yTick--25">
+      {Math.round(limit * 0.25).toLocaleString()}
+    </div>
+    <div class="trend__yTick trend__yTick--50">
+      {Math.round(limit * 0.5).toLocaleString()}
+    </div>
+    <div class="trend__yTick trend__yTick--75">
+      {Math.round(limit * 0.75).toLocaleString()}
+    </div>
+    <div class="trend__yTick">{limit.toLocaleString()}</div>
+    {#each counts as count, index}
+      <div
+        class="trend__day"
+        style={`width: ${100 / counts.length}%; height: ${Math.round(
+          (count / limit) * 100
+        )}%; background-color: ${colors[index]}`}
+        on:mouseenter={addHover}
+        on:mouseleave={removeHover}
+      >
+        <div
+          class={(counts.length / index) * 100 < 50
+            ? `trend__dayDetails`
+            : `trend__dayDetails trend__dayDetails--shifted`}
+        >
+          {new Date(dates[index]).toLocaleDateString()}<br />
+          <span class="trend__dayDetailsMeta">Cases:</span>
+          {counts[index].toLocaleString()}
+        </div>
+      </div>
+    {/each}
+  </div>
+</div>
 
 <style>
   .trend {
@@ -143,37 +234,13 @@
   .trend__dayDetails--shifted {
     transform: translateX(-100%);
   }
-  .trend__day:hover .trend__dayDetails {
+  /* .trend__day:hover .trend__dayDetails, */
+  :global(.trend__day.hover .trend__dayDetails) {
     display: block;
     opacity: 1;
     transition: all 200ms;
   }
+  .trend__day.hover {
+    background-color: black !important;
+  }
 </style>
-
-<div class="count count--trend">
-  <h1 class="count__title">Trend From March 3rd, 2020</h1>
-  <div class="trend">
-    <div class="trend__yTick trend__yTick--25">
-      {Math.round(limit * 0.25).toLocaleString()}
-    </div>
-    <div class="trend__yTick trend__yTick--50">
-      {Math.round(limit * 0.5).toLocaleString()}
-    </div>
-    <div class="trend__yTick trend__yTick--75">
-      {Math.round(limit * 0.75).toLocaleString()}
-    </div>
-    <div class="trend__yTick">{limit.toLocaleString()}</div>
-    {#each counts as count, index}
-      <div
-        class="trend__day"
-        style={`width: ${100 / counts.length}%; height: ${Math.round((parseInt(count, 10) / limit) * 100)}%; background-color: ${colors[index]}`}>
-        <div
-          class={(counts.length / index) * 100 < 50 ? `trend__dayDetails` : `trend__dayDetails trend__dayDetails--shifted`}>
-          {new Date(dates[index]).toLocaleDateString()}<br />
-          <span class="trend__dayDetailsMeta">Cases:</span>
-          {parseInt(counts[index], 10).toLocaleString()}
-        </div>
-      </div>
-    {/each}
-  </div>
-</div>

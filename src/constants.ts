@@ -4,10 +4,12 @@ import type { ICounties } from './models/county';
 export const DATE: number = 0;
 export const COUNTY: number = 1;
 export const FIPS: number = 2;
-export const CONFIRMED_CASES: number = 3;
-export const DEATHS: number = 4;
-export const NEW_CONFIRMED_CASES: number = 5;
-export const NEW_DEATHS: number = 6;
+export const POPULATION = 3;
+export const CONFIRMED_CASES = 4;
+export const REPORTED_CASES = 5;
+export const PROBABLE_CASES = 6;
+export const REPORTED_AND_PROBABLE_CASES = 7;
+export const REPORTED_DEATHS = 8;
 
 // Dates
 export const START_DATE: string = '2020-03-02';
