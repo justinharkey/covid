@@ -20,6 +20,22 @@
   };
 </script>
 
+<div class="count count--county">
+  <h1 class="count__title">Covid-19 Data For</h1>
+  <!-- svelte-ignore a11y-no-onchange -->
+  <select bind:value={selectedCountyName} on:change={updateSelectedCounty}>
+    {#each COUNTY_LIST.counties as county}
+      <option value={county.countyName}>
+        {county.countyName}
+        County
+      </option>
+    {/each}
+  </select>
+  <a class="count__subtitle" href="https://github.com/nytimes/covid-19-data"
+    >Source: NY Times</a
+  >
+</div>
+
 <style>
   select {
     font-size: 18px;
@@ -31,17 +47,3 @@
     margin: 4px 0;
   }
 </style>
-
-<div class="count count--county">
-  <h1 class="count__title">Covid-19 Data For</h1>
-  <!-- svelte-ignore a11y-no-onchange -->
-  <select bind:value={selectedCountyName} on:change={updateSelectedCounty}>
-    {#each COUNTY_LIST.counties as county}
-      <option value={county.countyName}>{county.countyName} County</option>
-    {/each}
-  </select>
-  <a
-    class="count__subtitle"
-    href="https://github.com/datadesk/california-coronavirus-data/blob/master/latimes-county-totals.csv">Source:
-    LA Times</a>
-</div>

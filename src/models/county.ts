@@ -1,6 +1,7 @@
 export interface ICounty {
     countyName: string;
     countySlug: string;
+    fips: number;
 }
 
 export interface ICounties {

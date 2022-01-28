@@ -1,8 +1,11 @@
 import { covidData, selectedCountyData } from '../stores';
 import { COUNTY, CONFIRMED_CASES, DATE, PROBABLE_CASES, REPORTED_AND_PROBABLE_CASES, REPORTED_CASES, REPORTED_DEATHS, FIPS, POPULATION } from "../constants";
 import type { ICountyDaily } from '../models/county';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 export class DataService {
+
+    static supabase = createClient('https://ratcqujtiropkzbjjlho.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MTM0MDY4OSwiZXhwIjoxOTU2OTE2Njg5fQ.RHmKmhkObUlYyZgdFg2mfPW5bkJzDuRDpY3BO7YrQzM');
 
     /**
      * Parses CSV data into an array.
@@ -23,6 +26,8 @@ export class DataService {
         let formattedData: ICountyDaily[] = [];
         for (let i = 1; i < data.length; i++) {
             const currentDay = data[i];
+            // const previousDay = i > 1 ? data[i + 1] : data[1];
+            // const newConfirmedCases = previousDay ? parseInt(currentDay[CONFIRMED_CASES], 10) - parseInt(previousDay[CONFIRMED_CASES], 10) : 0;
             const indexOfCounty = formattedData.findIndex(counties => counties.county === currentDay[COUNTY]);
             const dailyDetails = {
                 date: currentDay[DATE],
@@ -73,6 +78,16 @@ export class DataService {
     static filterSelectedCountyData = (selectedCounty: string, data: Array<ICountyDaily>) => {
         const filteredCounty = data.filter(x => x.county === selectedCounty)[0] || {} as ICountyDaily;
         selectedCountyData.set(filteredCounty);
+    }
+
+    static getCountyData = async (fips: number) => {
+        const { data, error } = await DataService.supabase.from("use_counties_cases").select("date, cases").eq("fips", fips);
+
+        if (error) {
+            console.error(error);
+        }
+
+        return data;
     }
 
     static getHighestDayCount = (data: ICountyDaily) => {

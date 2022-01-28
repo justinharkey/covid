@@ -19,235 +19,293 @@ export const COUNTY_LIST: ICounties = {
     counties: [
         {
             countyName: 'Alameda',
-            countySlug: 'alameda'
+            countySlug: 'alameda',
+            fips: 6001,
         },
         {
             countyName: 'Alpine',
-            countySlug: 'alpine'
+            countySlug: 'alpine',
+            fips: 6003,
         },
         {
             countyName: 'Amador',
-            countySlug: 'amador'
+            countySlug: 'amador',
+            fips: 6005,
         },
         {
             countyName: 'Butte',
-            countySlug: 'butte'
+            countySlug: 'butte',
+            fips: 6007,
         },
         {
             countyName: 'Calaveras',
-            countySlug: 'calaveras'
+            countySlug: 'calaveras',
+            fips: 6009,
         },
         {
             countyName: 'Colusa',
-            countySlug: 'colusa'
+            countySlug: 'colusa',
+            fips: 6011,
         },
         {
             countyName: 'Contra Costa',
-            countySlug: 'contra-costa'
+            countySlug: 'contra-costa',
+            fips: 6013,
         },
         {
             countyName: 'Del Norte',
-            countySlug: 'del-norte'
+            countySlug: 'del-norte',
+            fips: 6015,
         },
         {
             countyName: 'El Dorado',
-            countySlug: 'el-dorado'
+            countySlug: 'el-dorado',
+            fips: 6017,
         },
         {
             countyName: 'Fresno',
-            countySlug: 'fresno'
+            countySlug: 'fresno',
+            fips: 6019,
         },
         {
             countyName: 'Glenn',
-            countySlug: 'glenn'
+            countySlug: 'glenn',
+            fips: 6021,
         },
         {
             countyName: 'Humboldt',
-            countySlug: 'humboldt'
+            countySlug: 'humboldt',
+            fips: 6023,
         },
         {
             countyName: 'Imperial',
-            countySlug: 'imperial'
+            countySlug: 'imperial',
+            fips: 6025,
         },
         {
             countyName: 'Inyo',
-            countySlug: 'inyo'
+            countySlug: 'inyo',
+            fips: 6027,
         },
         {
             countyName: 'Kern',
-            countySlug: 'kern'
+            countySlug: 'kern',
+            fips: 6029,
         },
         {
             countyName: 'Kings',
-            countySlug: 'kings'
+            countySlug: 'kings',
+            fips: 6031,
         },
         {
             countyName: 'Lake',
-            countySlug: 'lake'
+            countySlug: 'lake',
+            fips: 6033,
         },
         {
             countyName: 'Lassen',
-            countySlug: 'lassen'
+            countySlug: 'lassen',
+            fips: 6035,
         },
         {
             countyName: 'Los Angeles',
-            countySlug: 'los-angeles'
+            countySlug: 'los-angeles',
+            fips: 6037,
         },
         {
             countyName: 'Madera',
-            countySlug: 'madera'
+            countySlug: 'madera',
+            fips: 6039,
         },
         {
             countyName: 'Marin',
-            countySlug: 'marin'
+            countySlug: 'marin',
+            fips: 6041,
         },
         {
             countyName: 'Mariposa',
-            countySlug: 'mariposa'
+            countySlug: 'mariposa',
+            fips: 6043,
         },
         {
             countyName: 'Mendocino',
-            countySlug: 'mendocino'
+            countySlug: 'mendocino',
+            fips: 6045,
         },
         {
             countyName: 'Merced',
-            countySlug: 'merced'
+            countySlug: 'merced',
+            fips: 6047,
         },
         {
             countyName: 'Modoc',
-            countySlug: 'modoc'
+            countySlug: 'modoc',
+            fips: 6049,
         },
         {
             countyName: 'Mono',
-            countySlug: 'mono'
+            countySlug: 'mono',
+            fips: 6051,
         },
         {
             countyName: 'Monterey',
-            countySlug: 'monterey'
+            countySlug: 'monterey',
+            fips: 6053,
         },
         {
             countyName: 'Napa',
-            countySlug: 'napa'
+            countySlug: 'napa',
+            fips: 6055,
         },
         {
             countyName: 'Nevada',
-            countySlug: 'nevada'
+            countySlug: 'nevada',
+            fips: 6057,
         },
         {
             countyName: 'Orange',
-            countySlug: 'orange'
+            countySlug: 'orange',
+            fips: 6059,
         },
         {
             countyName: 'Placer',
-            countySlug: 'placer'
+            countySlug: 'placer',
+            fips: 6061,
         },
         {
             countyName: 'Plumas',
-            countySlug: 'plumas'
+            countySlug: 'plumas',
+            fips: 6063,
         },
         {
             countyName: 'Riverside',
-            countySlug: 'riverside'
+            countySlug: 'riverside',
+            fips: 6065,
         },
         {
             countyName: 'Sacramento',
-            countySlug: 'sacramento'
+            countySlug: 'sacramento',
+            fips: 6067,
         },
         {
             countyName: 'San Benito',
-            countySlug: 'san-benito'
+            countySlug: 'san-benito',
+            fips: 6069,
         },
         {
             countyName: 'San Bernardino',
-            countySlug: 'san-bernardino'
+            countySlug: 'san-bernardino',
+            fips: 6071,
         },
         {
             countyName: 'San Diego',
-            countySlug: 'san-diego'
+            countySlug: 'san-diego',
+            fips: 6073,
         },
         {
             countyName: 'San Francisco',
-            countySlug: 'san-francisco'
+            countySlug: 'san-francisco',
+            fips: 6075,
         },
         {
             countyName: 'San Joaquin',
-            countySlug: 'san-joaquin'
+            countySlug: 'san-joaquin',
+            fips: 6077,
         },
         {
             countyName: 'San Luis Obispo',
-            countySlug: 'san-luis-obispo'
+            countySlug: 'san-luis-obispo',
+            fips: 6079,
         },
         {
             countyName: 'San Mateo',
-            countySlug: 'san-mateo'
+            countySlug: 'san-mateo',
+            fips: 6081,
         },
         {
             countyName: 'Santa Barbara',
-            countySlug: 'santa-barbara'
+            countySlug: 'santa-barbara',
+            fips: 6083,
         },
         {
             countyName: 'Santa Clara',
-            countySlug: 'santa-clara'
+            countySlug: 'santa-clara',
+            fips: 6085,
         },
         {
             countyName: 'Santa Cruz',
-            countySlug: 'santa-cruz'
+            countySlug: 'santa-cruz',
+            fips: 6087,
         },
         {
             countyName: 'Shasta',
-            countySlug: 'shasta'
+            countySlug: 'shasta',
+            fips: 6089,
         },
         {
             countyName: 'Sierra',
-            countySlug: 'sierra'
+            countySlug: 'sierra',
+            fips: 6091,
         },
         {
             countyName: 'Siskiyou',
-            countySlug: 'siskiyou'
+            countySlug: 'siskiyou',
+            fips: 6093,
         },
         {
             countyName: 'Solano',
-            countySlug: 'solano'
+            countySlug: 'solano',
+            fips: 6095,
         },
         {
             countyName: 'Sonoma',
-            countySlug: 'sonoma'
+            countySlug: 'sonoma',
+            fips: 6097,
         },
         {
             countyName: 'Stanislaus',
-            countySlug: 'stanislaus'
+            countySlug: 'stanislaus',
+            fips: 6099,
         },
         {
             countyName: 'Sutter',
-            countySlug: 'sutter'
+            countySlug: 'sutter',
+            fips: 6101,
         },
         {
             countyName: 'Tehama',
-            countySlug: 'tehama'
+            countySlug: 'tehama',
+            fips: 6103,
         },
         {
             countyName: 'Trinity',
-            countySlug: 'trinity'
+            countySlug: 'trinity',
+            fips: 6105,
         },
         {
             countyName: 'Tulare',
-            countySlug: 'tulare'
+            countySlug: 'tulare',
+            fips: 6107,
         },
         {
             countyName: 'Tuolumne',
-            countySlug: 'tuolumne'
+            countySlug: 'tuolumne',
+            fips: 6109,
         },
         {
             countyName: 'Ventura',
-            countySlug: 'ventura'
+            countySlug: 'ventura',
+            fips: 6111,
         },
         {
             countyName: 'Yolo',
-            countySlug: 'yolo'
+            countySlug: 'yolo',
+            fips: 6113,
         },
         {
             countyName: 'Yuba',
-            countySlug: 'yuba'
+            countySlug: 'yuba',
+            fips: 6115,
         }
     ]
 };

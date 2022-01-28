@@ -1,7 +1,7 @@
 <script lang="ts">
-  export let data;
-
   import { DataService } from "./services/dataService";
+
+  export let data;
 
   $: getTodayCount = () => {
     let todayCount: number = 0;
@@ -18,7 +18,6 @@
   <h1 class="count__title">New cases today</h1>
   <p class="count__count">{getTodayCount().toLocaleString()}</p>
   <h2 class="count__subtitle">
-    Highest day:
-    {DataService.getHighestDayCount(data).toLocaleString()}
+    Highest day: {DataService.getHighestDayCount(data).toLocaleString()}
   </h2>
 </div>
