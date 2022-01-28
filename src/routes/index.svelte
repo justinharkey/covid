@@ -113,7 +113,7 @@
 	}
 
 	const getChart = () => {
-		const ctx = document.getElementById('dailyCasesChart');
+		const ctx = dailyCasesChart.getContext('2d');
 
 		const chart = new Chart(ctx, {
 			type: 'bar',
@@ -163,9 +163,7 @@
 
 	getData();
 
-	onMount(async () => {
-		getChart();
-	})
+	$: $countyData && getChart();
 </script>
 
 {#if $countyData}
@@ -202,7 +200,6 @@
 	:global(body) {
 		font-family: 'Work Sans', Arial, Helvetica, sans-serif;
 		font-weight: 400;
-		padding: 14px;
 	}
 	h1, h2 {
 		margin: 0;
@@ -219,7 +216,7 @@
 		flex-direction: column;
 	}
 	.county, .daily, .weekly {
-		margin-bottom: 18px;
+		margin: 0 14px 18px;
 	}
 	.county__title {
 		font-weight: 600;
