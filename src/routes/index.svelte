@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createClient } from '@supabase/supabase-js';
 	import { countyData } from '../stores';
-	import Chart from 'chart.js/auto';
+	import Chart from 'chart.js/auto/auto';
 	import { onMount } from 'svelte';
 	import { SupabaseService } from '../constants';
 
