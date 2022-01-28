@@ -2,11 +2,11 @@
 	import { createClient } from '@supabase/supabase-js';
 	import { countyData } from '../stores';
 	import Chart from 'chart.js/auto/auto.js';
-	import { onMount } from 'svelte';
+	import { afterUpdate, onMount } from 'svelte';
 	import { SupabaseService } from '../constants';
 
-	let dailyCasesChart;
 	const supabase = createClient(SupabaseService.hostname, SupabaseService.publicKey);
+	let dailyCasesChart;
 
 	const formatData = (rawData) => {
 		let formattedData = [];
@@ -163,7 +163,13 @@
 
 	getData();
 
-	$: $countyData && getChart();
+	onMount(async () => {
+		getChart();
+	})
+
+	afterUpdate(async () => {
+		getChart();
+	})
 </script>
 
 {#if $countyData}
@@ -217,6 +223,9 @@
 	}
 	.county, .daily, .weekly {
 		margin: 0 14px 18px;
+	}
+	.county {
+		margin-top: 14px;
 	}
 	.county__title {
 		font-weight: 600;
