@@ -129,7 +129,16 @@
 				}]
 			},
 			options: {
+				normalized: true,
 				maintainAspectRatio: false,
+				layout: {
+					padding: {
+						left: 0,
+						right: 0,
+						top: 0,
+						bottom: -8
+					}
+				},
 				scales: {
 					y: {
 						suggestedMax: getHighestDay(),
@@ -152,10 +161,31 @@
 						}
 					}
 				},
-				plugins : {
+				plugins: {
 					legend: {
 						display: false,
-					}
+					},
+					tooltip: {
+						displayColors: false,
+						padding: {
+							x: 16,
+							y: 5
+						},
+						cornerRadius: 5,
+						borderColor: '#ddd',
+						borderWidth: '1',
+						backgroundColor: '#fff',
+						bodyColor: '#323232',
+						titleColor: '#323232',
+						yAlign: 'bottom',
+						callbacks: {
+							title: function() {},
+							label: function(context) {
+								let label = `${context.formattedValue}`;
+								return label;
+							}
+						}
+					},
 				}
 			}
 		});
@@ -269,9 +299,5 @@
 	.chart {
 		position: relative;
 		flex: 1;
-	}
-	#dailyCasesChart {
-		width: 100% !important;
-		height: 100% !important;
 	}
 </style>
